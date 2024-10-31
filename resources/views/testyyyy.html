@@ -1,0 +1,380 @@
+@extends('layouts.profile.master')
+
+@section('title', 'Profile')
+
+@section('content')
+<div class="container custom-container">
+    <main class="custom-main-content p-5" role="main">
+        <div class="row mb-4">
+            <div class="col-md-12">
+
+                <!-- صورة البروفايل -->
+                <div class="left-side">
+                    <img src="{{ $user->avatar  }}" alt="User Avatar" class="pp">
+                </div>
+
+                <!-- بيانات المستخدم والمنشورات -->
+                <div class="right-side white-box">
+                    <h1 class="custom-card-user-profile-name">{{ $user->name ?? 'John Doe' }}</h1>
+
+                    <!-- قسم إضافة المنشور -->
+                    <div class="comment-block">
+                        <button id="toggleForm" class="btn btn-primary mb-4">Add New Post</button>
+                        <div id="postForm" style="display: none;">
+                            <form action="{{ route('user.store.post') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group">
+                                    <textarea name="content" id="content" class="form-control" placeholder="Enter your post here..." required></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="image">Upload Image</label>
+                                    <input type="file" name="image" id="image" class="form-control-file">
+                                </div>
+
+                                <button type="submit" class="btn btn-success">Add Post</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- عرض المنشورات -->
+                    <h2>My Posts</h2>
+                    @if($posts->count())
+                        <ul class="posts">
+                            @foreach($posts as $post)
+                                <li class="post-item mb-4">
+                                    <strong>{{ $post->user->name }}</strong>
+                                    <small>{{ $post->created_at->diffForHumans() }}</small>
+                                    <p>{{ $post->content }}</p>
+
+                                    @if($post->image)
+                                        <img src="{{ asset('storage/' . $post->image) }}" class="img-fluid mt-2" alt="Post Image" style="width: 100px; height: 100px;">
+                                    @endif
+
+                                    <div class="post-actions">
+                                        <!-- زر الإعجاب -->
+                                        <form action="{{ route('post.like', $post->id) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn" style="background: none; border: none;">
+                                                <i class="fas fa-heart" style="color: red;"></i>
+                                            </button>
+                                        </form>
+                                        <span>{{ $post->reactions->count() }} Likes</span>
+
+                                        <!-- زر التعليقات -->
+                                        <button class="btn" style="background: none; border: none;" data-bs-toggle="modal" data-bs-target="#commentsModal-{{ $post->id }}">
+                                            <i class="fas fa-comment" style="color: green;"></i> Comments
+                                        </button>
+                                        <span>{{ $post->comments->count() }} Comments</span>
+
+                                        <!-- Dropdown للتعديل والحذف -->
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Options
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <!-- تعديل المنشور -->
+                                                <li><a class="dropdown-item" href="#" onclick="toggleEditForm({{ $post->id }})">Edit</a></li>
+                                                <!-- حذف المنشور -->
+                                                <li>
+                                                    <form action="{{ route('user.delete.post', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!-- نموذج تعديل المنشور -->
+                                    <div id="editForm-{{ $post->id }}" style="display: none;">
+                                        <form action="{{ route('user.edit.post', $post->id) }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="form-group">
+                                                <label for="content">Post Content</label>
+                                                <textarea name="content" id="content" class="form-control" required>{{ $post->content }}</textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="image">Image (optional)</label>
+                                                <input type="file" name="image" id="image" class="form-control-file">
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            <button type="button" class="btn btn-secondary" onclick="toggleEditForm({{ $post->id }})">Cancel</button> <!-- زر إلغاء -->
+                                        </form>
+                                    </div>
+
+                                    <!-- Modal للتعليقات -->
+                                    <div class="modal fade" id="commentsModal-{{ $post->id }}" tabindex="-1" aria-labelledby="commentsModalLabel-{{ $post->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="commentsModalLabel-{{ $post->id }}">Comments</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    @if($post->comments->count())
+                                                        @foreach($post->comments as $comment)
+                                                            <div class="custom-comment-container mb-2">
+                                                                <p>{{ $comment->content }}</p>
+                                                                <small>Commented by: {{ $comment->user->name }}</small>
+                                                            </div>
+                                                        @endforeach
+                                                    @else
+                                                        <p>No comments yet.</p>
+                                                    @endif
+                                                </div>
+                                                <!-- فورم إضافة تعليق داخل الـ Modal -->
+                                                <div class="modal-footer">
+                                                    <form action="{{ route('post.comment', $post->id) }}" method="POST">
+                                                        @csrf
+                                                        <textarea name="content" class="form-control" placeholder="Add your comment here" required></textarea>
+                                                        <button type="submit" class="btn btn-success mt-2">Add Comment</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p>No posts yet.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Script لتبديل عرض فورم الإضافة -->
+<script>
+    document.getElementById('toggleForm').addEventListener('click', function() {
+        var form = document.getElementById('postForm');
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    });
+
+    // Function لتبديل عرض فورم التعديل
+    function toggleEditForm(postId) {
+        var form = document.getElementById('editForm-' + postId);
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    }
+</script>
+
+@endsection
+<!-- --------------------------- -->
+
+
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        Options
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <!-- تعديل المنشور -->
+        <li><a class="dropdown-item" href="#" onclick="toggleEditForm({{ $post->id }})">Edit</a></li>
+        <!-- حذف المنشور -->
+        <li>
+            <form action="{{ route('user.delete.post', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="dropdown-item text-danger">Delete</button>
+            </form>
+        </li>
+    </ul>
+</div>
+-----------
+<!--  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- محتويات الـ head -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'careprovider')</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/careprovider.css') }}">
+    <style>
+     .container {
+  overflow: visible;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f1f0fe;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
+    z-index: 10000; /* تأكد أن القيمة عالية */
+    border-radius: 5px;
+}
+
+        /* تعديل التنسيقات للأزرار داخل النماذج */
+        .dropdown-content form button {
+            color: black;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+            background: none;
+            border: none;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        /* تطبيق تأثير hover */
+        .dropdown-content form button:hover {
+            background-color: #ddd;
+        }
+
+        /* Show dropdown when clicked */
+        .dropdown-content.show {
+            display: block;
+        }
+
+        /* Additional styles */
+        .notification-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 8px;
+            height: 8px;
+            background-color: red;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- إضافة الشعار -->
+    <div class="logo-container">
+        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="logo">
+    </div>
+
+    <!-- الروابط العلوية -->
+    <div class="top-nav">
+        <div class="nav-links">
+            <!-- أيقونة الملف الشخصي -->
+            <a href="{{ route('careprovider.profile', auth()->user()->careProviderProfile->id) }}"
+               class="{{ request()->routeIs('careprovider.profile') ? 'active' : '' }}">
+                <i class="fa-solid fa-user-doctor" style="color: #fffafa;"></i>
+            </a>
+
+            <!-- إشعارات -->
+            <a href="#" onclick="toggleDropdown(event)" class="notification-icon">
+                <i class="fa-regular fa-bell" style="color: #fafcff;">
+                    @if(auth()->user()->unreadNotifications->count() > 0)
+                        <span class="notification-dot"></span>
+                    @endif
+                </i>
+            </a>
+            <div class="dropdown-content">
+                @if(auth()->user()->notifications->count() > 0)
+                    @foreach(auth()->user()->unreadNotifications as $notification)
+                        <form action="{{ route('notifications.markAsReadById', $notification->id) }}" method="POST">
+                            @csrf
+                            <!-- حقل مخفي يحمل عنوان إعادة التوجيه -->
+                            <input type="hidden" name="redirect_to" value="{{ route('careprovider.bookings.index') }}">
+                            <button type="submit">
+                                {{ $notification->data['message'] ?? 'لا يوجد رسالة' }}
+                                <br>
+                                <small>{{ $notification->created_at->diffForHumans() }}</small>
+                            </button>
+                        </form>
+                    @endforeach
+                @else
+                    <p>لا توجد إشعارات جديدة</p>
+                @endif
+            </div>
+
+            <!-- بقية الروابط -->
+            <a href="#" class="{{ request()->routeIs('messages') ? 'active' : '' }}">
+                <i class="fa-regular fa-comments" style="color: #ffffff;"></i>
+            </a>
+            <a href="{{ route('logout') }}"
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+               class="{{ request()->routeIs('logout') ? 'active' : '' }}">
+                <i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i>
+            </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+        </div>
+    </div>
+
+        <!-- القائمة الجانبية -->
+        <div class="sidebar">
+            <ul>
+                <li>
+                    <a href="{{ route('careprovider.dashboard') }}" class="{{ request()->routeIs('careprovider.dashboard') ? 'active' : '' }}">
+                        <i class="fa-solid fa-chart-line" style="color: #ffffff;margin-right:2vh"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('careprovider.advice.create') }}" class="{{ request()->routeIs('careprovider.advice.create') ? 'active' : '' }}">
+                        <i class="fa-regular fa-rectangle-list" style="color: #ffffff;margin-right:2vh"></i> Advices
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('careprovider.bookings.index') }}" class="{{ request()->routeIs('careprovider.bookings.index') ? 'active' : '' }}">
+                        <i class="fa-regular fa-calendar-check" style="color: #ffffff;margin-right:2vh"></i> Bookings
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('careprovider.events.index') }}" class="{{ request()->routeIs('careprovider.events.index') ? 'active' : '' }}">
+                        <i class="fa-regular fa-calendar-days" style="color: #ffffff;margin-right:2vh"></i> Events
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('careprovider.consultations.index') }}" class="{{ request()->routeIs('careprovider.consultations.index') ? 'active' : '' }}">
+                        <i class="fa-solid fa-question" style="color: #ffffff;margin-right:2vh"></i> Consultations
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="gray-box">
+            <main>
+                <!-- هنا سيتم إدراج محتوى الصفحة -->
+                @yield('content')
+            </main>
+        </div>
+
+
+    <script>
+        function toggleDropdown(event) {
+            event.preventDefault();
+            const dropdownContent = event.currentTarget.nextElementSibling;
+
+            // Toggle the dropdown visibility
+            dropdownContent.classList.toggle('show');
+        }
+
+        // Close the dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdownContent = document.querySelector('.dropdown-content.show');
+            if (dropdownContent && !event.target.closest('.notification-icon') && !event.target.closest('.dropdown-content')) {
+                dropdownContent.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #8375d0; /* اللون النهدي */
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start; /* تعديل المحاذاة للبدء من اليسار */
+    position: relative;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+/* الشعار يبقى كما هو */
+.logo-container {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+}
+
+.logo {
+    position: absolute;
+    width: 150px;
+    height: auto;
+    top: -17px;
+
+}
+
+
+/* إضافة السايد بار */
+.sidebar {
+    width: 200px;
+    height: 100vh;
+    padding-top: 70px;
+    position: fixed;
+    top: 40px;
+    left: -1px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white; /* لون النص أبيض */
+    font-size: 18px;
+    padding: 15px;
+    margin-left: 35px; /* تحريك الصندوق لليمين */
+    display: flex;
+    align-items: center; /* توسيط عمودي */
+    background-color: rgba(131, 117, 208, 0.8); /* خلفية شفافة قليلاً */
+    border: none; /* بدون حدود */
+    border-radius: 50px; /* زوايا دائرية أكبر */
+    /* box-shadow: 0px 4px 15px rgba(67, 65, 65, 0.3);  */
+    transition: background-color 0.3s, box-shadow 0.3s; /* تأثير الانتقال */
+}
+
+.sidebar ul li a:hover {
+    background-color: rgb(131, 117, 208); /* لون أغمق عند التمرير */
+    color: white;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); /* تكبير الظل عند التمرير */
+}
+.sidebar ul li a.active {
+    background-color: rgb(131, 117, 208, .2); /* لون أغمق عند التمرير */
+    color: white;
+    box-shadow: 0px 6px 20px rgba(242, 190, 190, 0.3);
+}
+.top-nav .nav-links a.active {
+    background-color: rgb(131, 117, 208, .2); /* لون أغمق عند التمرير */
+    color: white;
+    box-shadow: 0px 6px 20px rgba(242, 190, 190, 0.3); /}
+
+
+/* تعديل موقع المربع الرمادي */
+.gray-box {
+    margin-left: 220px; /* ترك مساحة للسايد بار */
+    width: 80%;
+    background-color: #f1f0fe;
+    border-radius: 50px 0 0 0;
+    padding: 35px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 80px;
+    right: 0;
+    overflow-y: auto;
+    max-height: calc(100vh - 150px);
+    box-shadow: 10px 10px 30px rgba(202, 195, 195, 0.5); /* ظل واضح وكبير */
+    min-height: 90%;
+
+z-index: 0;
+}
+
+.form-box {
+    background-color: #f1f0fe;
+    border-radius: 50px;
+    padding: 20px;
+    width: 70%;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.form-box h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 18px;
+    color: #333;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form-group input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    outline: none;
+    text-align: center;
+    margin: auto;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #8375d0;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: rgb(131, 117, 208); /* لون أغمق عند التمرير */
+    color: white;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); }
+
+.alert {
+    padding: 10px;
+    background-color: #d4edda;
+    color: #155724;
+    border-radius: 50px;
+    width: 80%;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+/* -----------تيبل */
+th, td {
+    border: 1px solid black;
+    border-radius: 50px;
+    height: 4vh;
+    text-align: center;
+    padding: 2vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: #f1f0fe;
+}
+
+.events-table {
+    width: 70%;
+    margin: auto;
+    border-spacing: 15px;
+}
+h1 {
+    text-align: center;
+}
+.actions-icons i {
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.actions-icons i:hover {
+    color: #5a4bb7; /* لون مختلف عند التمرير */
+    transform: scale(1.2); /* تكبير الأيقونة عند التمرير */
+    cursor: pointer;
+}
+
+.table-cell {
+    max-width: 150px; /* عرض الخلية */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+     /* لإظهار "..." */
+
+
+}
+/* تنسيق النص ليظهر على عدة أسطر إذا كان طويلاً */
+.wrap-text {
+    word-wrap: break-word; /* يسمح بكسر الكلمات الطويلة */
+    white-space: normal; /* يسمح بانتقال النص إلى السطر التالي */
+    max-width: 300px; /* يمكنك التحكم في عرض الخلية هنا */
+}
+
+/* تنسيق الجدول بشكل عام */
+.consultations-table {
+    width: 100%;
+    border-spacing: 15px;
+
+}
+
+.consultations-table th, .consultations-table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+/* تموضع القائمة المنسدلة */
+.dropdown {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.dropbtn {
+    background-color: #8375d0;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* محتوى القائمة المنسدلة */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f1f0fe;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #ccc;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #6b5ab9;
+}
+/* تعديل الشريط العلوي ليكون محاذيًا بالكامل لليمين وتحت قليلاً */
+.top-nav {
+    display: flex;
+    justify-content: flex-end; /* جعل الروابط بالكامل تذهب إلى اليمين */
+    padding: 10px 20px;
+    background-color: transparent; /* خلفية شفافة */
+    position: absolute;
+    right: 0;
+    top: 20px; /* نزول الشريط العلوي إلى الأسفل */
+}
+
+.nav-links a {
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    margin-left: 15px;
+    background-color:  rgba(131, 117, 208, 1);/* خلفية شفافة قليلاً */
+    text-decoration: none;
+    border-radius: 50px;
+    box-shadow: 0px 4px 15px rgba(67, 65, 65, 0.3);
+    transition: background-color 0.3s, box-shadow 0.3s;
+
+}
+
+.nav-links a:hover {
+    background-color: rgba(131, 117, 208, 1); /* لون أغمق عند التمرير */
+    color: white;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); /* تكبير الظل عند التمرير */
+}
+.nav-links{
+    transform: translateY(0) translateX(-80px); /* يرفع العنصر للأعلى بمقدار 10 بكسل ويزيحه لليسار بمقدار 10 بكسل */
+
+}
+
+/* -------------------- */
+
+.custom-modal {
+    display: none; /* يتم إخفاء الـ Modal بشكل افتراضي */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* خلفية نصف شفافة */
+    overflow: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 60%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: red;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+}
+

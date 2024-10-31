@@ -1,0 +1,751 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #8375d0; /* اللون النهدي */
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start; /* تعديل المحاذاة للبدء من اليسار */
+    position: relative;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+/* الشعار يبقى كما هو */
+.logo-container {
+    position: absolute;
+    top: -20px;
+    left: -10px;
+}
+
+.logo {
+    position: absolute;
+    width: 150px;
+    height: auto;
+}
+
+/* إضافة السايد بار */
+.sidebar {
+    width: 200px;
+    height: 100vh;
+    padding-top: 70px;
+    position: fixed;
+    top: 40px;
+    left: -1px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white; /* لون النص أبيض */
+    font-size: 18px;
+    padding: 15px;
+    margin-left: 35px; /* تحريك الصندوق لليمين */
+    display: flex;
+    align-items: center; /* توسيط عمودي */
+    background-color: rgba(131, 117, 208, 0.8); /* خلفية شفافة قليلاً */
+    border: none; /* بدون حدود */
+    border-radius: 50px; /* زوايا دائرية أكبر */
+    /* box-shadow: 0px 4px 15px rgba(67, 65, 65, 0.3);  */
+    transition: background-color 0.3s, box-shadow 0.3s; /* تأثير الانتقال */
+}
+
+.sidebar ul li a:hover {
+    background-color: rgb(131, 117, 208); /* لون أغمق عند التمرير */
+    color: white;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); /* تكبير الظل عند التمرير */
+}
+.sidebar ul li a.active {
+    background-color: rgb(131, 117, 208, .2); /* لون أغمق عند التمرير */
+    color: white;
+    box-shadow: 0px 6px 20px rgba(242, 190, 190, 0.3); /* تكبير الظل عند التمرير */
+}
+
+
+/* تعديل موقع المربع الرمادي */
+.gray-box {
+    margin-left: 220px; /* ترك مساحة للسايد بار */
+    width: 83%;
+    background-color: #f1f0fe;
+    border-radius: 20px 0 0 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 80px;
+    right: 0;
+    overflow-y: auto;
+    max-height: calc(100vh - 150px);
+    min-height: 90%;
+    overflow: auto;
+    scrollbar-width: none;
+
+}
+
+.form-box {
+    background-color: #f1f0fe;
+    border-radius: 50px;
+    padding: 20px;
+    width: 70%;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.form-box h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 18px;
+    color: #333;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form-group input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    outline: none;
+    text-align: center;
+    margin: auto;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #8375d0;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: rgb(131, 117, 208); /* لون أغمق عند التمرير */
+    color: white;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); }
+
+.alert {
+    padding: 10px;
+    background-color: #d4edda;
+    color: #155724;
+    border-radius: 50px;
+    width: 80%;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+/* -----------تيبل */
+th, td {
+    border: 1px solid black;
+    border-radius: 50px;
+    height: 4vh;
+    text-align: center;
+    padding: 2vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: #f1f0fe;
+}
+
+.events-table {
+    width: 70%;
+    margin: auto;
+    border-spacing: 15px;
+}
+h1 {
+    text-align: center;
+}
+.actions-icons i {
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.actions-icons i:hover {
+    color: #5a4bb7; /* لون مختلف عند التمرير */
+    transform: scale(1.2); /* تكبير الأيقونة عند التمرير */
+    cursor: pointer;
+}
+
+.table-cell {
+    max-width: 150px; /* عرض الخلية */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+     /* لإظهار "..." */
+
+
+}
+/* تنسيق النص ليظهر على عدة أسطر إذا كان طويلاً */
+.wrap-text {
+    word-wrap: break-word; /* يسمح بكسر الكلمات الطويلة */
+    white-space: normal; /* يسمح بانتقال النص إلى السطر التالي */
+    max-width: 300px; /* يمكنك التحكم في عرض الخلية هنا */
+}
+
+/* تنسيق الجدول بشكل عام */
+.consultations-table {
+    width: 100%;
+    border-spacing: 15px;
+
+}
+
+.consultations-table th, .consultations-table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+/* تموضع القائمة المنسدلة */
+.dropdown {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.dropbtn {
+    background-color: #8375d0;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* محتوى القائمة المنسدلة */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f1f0fe;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #ccc;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #6b5ab9;
+}
+/* تعديل الشريط العلوي ليكون محاذيًا بالكامل لليمين وتحت قليلاً */
+.top-nav {
+    display: flex;
+    justify-content: flex-end; /* جعل الروابط بالكامل تذهب إلى اليمين */
+    padding: 10px 20px;
+    background-color: transparent; /* خلفية شفافة */
+    position: absolute;
+    right: 0;
+    top: 20px; /* نزول الشريط العلوي إلى الأسفل */
+}
+
+.nav-links a {
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    margin-left: 15px;
+    background-color:  rgba(131, 117, 208, 1);/* خلفية شفافة قليلاً */
+    text-decoration: none;
+    border-radius: 50px;
+    box-shadow: 0px 4px 15px rgba(67, 65, 65, 0.3);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.nav-links a:hover {
+    background-color: rgba(131, 117, 208, 1); /* لون أغمق عند التمرير */
+    color: white;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); /* تكبير الظل عند التمرير */
+}
+
+/* -------------------- */
+/* حاوية الفورم */
+.post-form-container {
+    width: 60%;
+    max-width: 900px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
+    position: relative;
+align-self: center;
+margin: 45px;
+}
+
+/* حقل الإدخال */
+.post-input {
+
+
+    width: 97%;
+    height: 150px; /* زيادة ارتفاع حقل الإدخال */
+    border: none;
+    background-color: #f0f2f5;
+    font-size: 1.2em; /* تكبير حجم النص */
+    border-radius: 10px;
+    outline: none;
+    color: #333;
+    resize: none; /* إلغاء إمكانية تغيير حجم الحقل */
+    padding: 15px; /* هنا يتم إضافة البادنق للنص داخل الحقل */
+
+}
+
+/* صورة المستخدم في الزاوية */
+.user-image-container {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+}
+
+.user-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* أيقونات التحكم */
+.form-actions {
+    margin-top: 10px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+
+}
+
+.form-actions label {
+    background-color: transparent;
+    border: none;
+    color: #666;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.form-actions label i {
+    font-size: 1.2em;
+    color: #4bb543;
+}
+
+/* زر إضافة البوست */
+.add-btn {
+    background-color: #f58a59;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+    background-color: #e57a50;
+}
+
+/* استخدام Flexbox لوضع الزر على اليمين */
+.form-group {
+    display: flex;
+    justify-content: flex-end; /* يجعل الزر يتحرك إلى اليمين */
+}
+
+/* تنسيق عرض الصورة المختارة */
+.image-preview-container img {
+    max-width: 100%;
+    max-height: 300px;
+    margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* زر الإلغاء */
+#remove-image {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color:  rgba(131, 117, 208, 1);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+}
+/* ---------------------------- */
+/* المنشورات */
+.post-item {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.post-header {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.post-content {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #333;
+}
+
+.post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* التعليقات */
+.comments-section {
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    width: 65%;
+}
+
+.custom-comment-container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.comment-input {
+    border-radius: 8px;
+    width:90%;
+    height: 150px;
+    resize: none; /* إلغاء إمكانية تغيير حجم الحقل */
+    padding: 15px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.add-comment {
+    margin-top: 20px;
+}
+
+/* أيقونات */
+.like-icon {
+    color: #e74c3c;
+    font-size: 20px;
+}
+
+.comment-icon {
+    color: #2ecc71;
+    font-size: 20px;
+}
+
+.btn {
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* يجعل القائمة تظهر أسفل الزر */
+    right: 0; /* يجعل القائمة تتراصف إلى يمين الزر */
+    z-index: 1000; /* لضمان ظهور القائمة فوق العناصر الأخرى */
+    min-width: 100px; /* تعيين عرض أدنى للقائمة لضمان التناسق */
+}
+
+.dropdown-item {
+    padding: 10px;
+    text-align: right; /* جعل النص داخل القائمة يظهر من اليمين */
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-item {
+    border: 1px solid #ddd; /* إضافة حد لكل بوست */
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px; /* إضافة مسافة بين كل بوست */
+    background-color: #fff; /* إضافة خلفية بيضاء لكل بوست */
+}
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-subtitle {
+    font-size: 14px;
+    color: #888;
+}
+
+.card-text {
+    font-size: 14px;
+}
+
+.badge-warning {
+    background-color: #ffcc00;
+}
+
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+}
+
+#bookingFormContainer {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+}
+/* -------------------profile and timeline */
+/* صورة المستخدم الدائرية الصغيرة */
+.user-profile-img-small {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* جعل الصورة دائرية */
+    object-fit: cover; /* لضمان ملائمة الصورة للإطار الدائري */
+}
+/* القائمة المنسدلة */
+.dropdown-menu-custom {
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    min-width: 180px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1000;
+    padding: 10px 0;
+    font-size: 14px;
+}
+
+/* عناصر القائمة المنسدلة */
+.dropdown-item-custom {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border: none;
+    width: 100%;
+}
+
+/* أيقونات القائمة */
+.dropdown-item-custom i {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+/* لون الخلفية عند التمرير */
+.dropdown-item-custom:hover {
+    background-color: #f1f1f1;
+}
+
+/* زر التعديل */
+.edit-btn {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+}
+
+/* لون أيقونة التعديل */
+.edit-btn i {
+    color: #333;
+}
+
+/* عند التمرير فوق زر التعديل */
+.edit-btn:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+/* زر الحذف */
+.delete-btn {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    color: red;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+}
+
+/* لون أيقونة الحذف */
+.delete-btn i {
+    color: red;
+}
+
+/* عند التمرير فوق زر الحذف */
+.delete-btn:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+/* حاوية الملف الشخصي */
+.profile-container {
+    display: flex;
+    align-items: start;
+    border: 1px solid #8375d0;
+    padding: 15px;
+    border-radius: 0 0 20px 0; /* الزاوية السفلية اليمنى فقط */
+    background-color: #8375d0;
+    width: 97.5%;
+    justify-content: space-between;
+    top: -20px;
+
+}
+
+/* صورة المستخدم واسم المستخدم */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.user-profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    margin-left: 20px
+}
+
+.user-info h5 {
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    text-align: center;
+}
+
+/* الأزرار */
+/* تنسيق الأزرار */
+.buttons a {
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: white;
+    color: #8375d0;
+    border: none;
+    border-radius: 50px; /* جعل الأزرار دائرية */
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* إضافة ظل */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: 10px; /* مسافة بين الأزرار */
+    margin-top: 10%;
+    position: relative;
+right: 120%;
+}
+
+/* تأثير عند التمرير فوق الأزرار */
+.buttons a:hover {
+    background-color: #8375d0;
+    color: white;
+}
+
+
+/* إخفاء/إظهار الفورم */
+.post-form {
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* المعاينة والإلغاء */
+.image-preview-container {
+    position: relative;
+}
+
+.image-preview {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    display: none;
+}
+
+.remove-image-btn {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+}
+#editProfileForm {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
